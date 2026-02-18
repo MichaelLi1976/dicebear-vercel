@@ -1,0 +1,10 @@
+{
+  "name": "dicebear-vercel",
+  "version": "1.0.0",
+  "description": "DiceBear Avatar API",
+  "main": "api/avatar.js",
+  "dependencies": {
+    "@dicebear/core": "^9.0.0",
+    "@dicebear/collection": "^9.0.0"
+  }
+}
