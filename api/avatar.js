@@ -1,45 +1,29 @@
 import { createAvatar } from '@dicebear/core';
-import { 
-  avataaars, 
-  personas, 
-  funEmoji, 
-  lorelei, 
-  notionists,
-  bottts 
-} from '@dicebear/collection';
+import { avataaars } from '@dicebear/collection';
 
 export default function handler(req, res) {
   try {
-    const { seed, style, ...options } = req.query;
+    const { seed, ...options } = req.query;
 
-    // 根據 style 選擇頭像風格
-    let avatarStyle;
-    switch (style) {
-      case 'personas':
-        avatarStyle = personas; // 🥇 推薦！圓潤臉型
-        break;
-      case 'fun-emoji':
-        avatarStyle = funEmoji; // 🥈 可愛 emoji
-        break;
-      case 'lorelei':
-        avatarStyle = lorelei; // 🥉 優雅女性角色
-        break;
-      case 'notionists':
-        avatarStyle = notionists; // 簡約風格
-        break;
-      case 'bottts':
-        avatarStyle = bottts; // 機器人風格
-        break;
-      case 'avataaars':
-      default:
-        avatarStyle = personas; // ⚠️ 預設改用 personas
-        break;
+    // 處理陣列類型的參數（mouth, eyes, accessories 等）
+    const processedOptions = {};
+    
+    for (const [key, value] of Object.entries(options)) {
+      // 如果參數值存在，將其轉換為陣列格式
+      if (value) {
+        // 檢查是否為逗號分隔的多個值
+        if (typeof value === 'string' && value.includes(',')) {
+          processedOptions[key] = value.split(',');
+        } else {
+          processedOptions[key] = [value];
+        }
+      }
     }
 
     // 建立頭像
-    const avatar = createAvatar(avatarStyle, {
+    const avatar = createAvatar(avataaars, {
       seed: seed || 'default',
-      ...options
+      ...processedOptions
     });
 
     const svg = avatar.toString();
